@@ -44,7 +44,7 @@ const getIcoByLinkTag = async (host: string): Promise<Buffer> => {
   const buffer = Buffer.from(data);
 
   if (iconUrl.endsWith(".ico")) {
-    return icoToPng(Buffer.from(buffer), 32);
+    return icoToPng(Buffer.from(buffer), 64);
   }
 
   return sharp(Buffer.from(buffer)).resize(RESIZE_OPTIONS).png().toBuffer();
