@@ -6,7 +6,7 @@ export default defineResponseHandler(async (event) => {
     const response = await fetch(fetchUrl);
 
     if (response.ok) {
-      return await response.arrayBuffer();
+      return Buffer.from(await response.arrayBuffer());
     } else {
       throw new Error();
     }
