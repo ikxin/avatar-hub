@@ -3,15 +3,11 @@ import sharp from "sharp";
 export default defineResponseHandler(async (event) => {
   const user = getRouterParam(event, "user");
 
-  let response: Response;
-
   try {
-    response = await fetch(`https://github.com/${user}.png?size=100`);
+    const avatar = `https://github.com/${user}.png?size=100`;
+    const buffer = await fetch(avatar).then((res) => res.arrayBuffer());
+    return sharp(Buffer.from(buffer)).png().toBuffer();
   } catch {
-    response = await fetch(`https://github.com/github.png?size=100`);
+    return useStorage("assets:server").getItemRaw("github/fallback.png");
   }
-
-  return sharp(Buffer.from(await response.arrayBuffer()))
-    .png()
-    .toBuffer();
 });

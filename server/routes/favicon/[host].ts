@@ -14,11 +14,9 @@ export default defineResponseHandler(async (event) => {
     return await getIcoByFavicon(host);
   } catch (error) {}
 
-  const data = await useStorage("assets:server").getItemRaw(
+  return useStorage("assets:server").getItemRaw(
     `favicon/${/^[0-9a-z]$/.test(icoString) ? icoString : "="}.png`
   );
-
-  return data;
 });
 
 const LINK_REGEX =

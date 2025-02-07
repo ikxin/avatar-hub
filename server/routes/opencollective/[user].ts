@@ -1,21 +1,17 @@
-import sharp from "sharp";
-
 export default defineResponseHandler(async (event) => {
   const user = getRouterParam(event, "user");
 
-  let response: Response;
-
   try {
-    response = await fetch(
-      `https://images.opencollective.com/${user}/avatar.png?width=100&height=100`
-    );
-  } catch {
-    response = await fetch(
-      `https://images.opencollective.com/opencollective/avatar.png?width=100&height=100`
-    );
-  }
+    const fetchUrl = `https://images.opencollective.com/${user}/avatar.png?width=100&height=100`;
+    const response = await fetch(fetchUrl);
 
-  return sharp(Buffer.from(await response.arrayBuffer()))
-    .png()
-    .toBuffer();
+    if (response.ok) {
+      return await response.arrayBuffer();
+    } else {
+      throw new Error();
+    }
+  } catch {
+    const fallbackKey = `opencollective/fallback.png`;
+    return useStorage("assets:server").getItemRaw(fallbackKey);
+  }
 });

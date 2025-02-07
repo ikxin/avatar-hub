@@ -3,11 +3,11 @@ import sharp from "sharp";
 export default defineResponseHandler(async (event) => {
   const { id } = getQuery(event);
 
-  const avatarUrl = `https://avatars.githubusercontent.com/u/${id}?size=100`;
-
-  const response = await fetch(avatarUrl);
-
-  return sharp(Buffer.from(await response.arrayBuffer()))
-    .png()
-    .toBuffer();
+  try {
+    const avatar = `https://avatars.githubusercontent.com/u/${id}?size=100`;
+    const buffer = await fetch(avatar).then((res) => res.arrayBuffer());
+    return sharp(Buffer.from(buffer)).png().toBuffer();
+  } catch {
+    return useStorage("assets:server").getItemRaw("github/fallback.png");
+  }
 });
