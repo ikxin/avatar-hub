@@ -36,9 +36,11 @@ const getIcoByLinkTag = async (host?: string) => {
   let [_, iconUrl] = href;
   iconUrl = new URL(iconUrl, `http://${host}`).toString();
 
-  const buffer = Buffer.from(
-    await fetch(iconUrl).then((res) => res.arrayBuffer())
-  );
+  const response = await fetch(iconUrl);
+
+  if (!response.ok) throw new Error();
+
+  const buffer = Buffer.from(await response.arrayBuffer());
 
   if (iconUrl.endsWith(".ico")) {
     return icoToPng(buffer, 64);

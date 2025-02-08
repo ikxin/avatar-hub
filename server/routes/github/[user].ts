@@ -1,13 +1,17 @@
-import sharp from "sharp";
-
 export default defineResponseHandler(async (event) => {
   const user = getRouterParam(event, "user");
 
   try {
-    const avatar = `https://github.com/${user}.png?size=100`;
-    const buffer = await fetch(avatar).then((res) => res.arrayBuffer());
-    return sharp(Buffer.from(buffer)).png().toBuffer();
+    const fetchUrl = `https://github.com/${user}.png?size=100`;
+    const response = await fetch(fetchUrl);
+
+    if (response.ok) {
+      return Buffer.from(await response.arrayBuffer());
+    } else {
+      throw new Error();
+    }
   } catch {
-    return useStorage("assets:server").getItemRaw("github/fallback.png");
+    const fallbackKey = `github/fallback.png`;
+    return useStorage("assets:server").getItemRaw(fallbackKey);
   }
 });
