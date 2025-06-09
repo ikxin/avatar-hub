@@ -12,10 +12,10 @@
   },
   "dependencies": {
     "ico-to-png": "^0.2.2",
-    "nuxt": "^3.15.1",
-    "nuxt-security": "^2.1.5",
-    "sharp": "^0.33.5",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "nuxt": "^3.17.5",
+    "nuxt-security": "^2.2.0",
+    "sharp": "^0.34.2",
+    "vue": "^3.5.16",
+    "vue-router": "^4.5.1"
   }
 }
